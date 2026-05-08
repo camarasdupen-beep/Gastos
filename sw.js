@@ -1,4 +1,4 @@
-const CACHE = 'gastos-v1';
+const CACHE = 'gastos-v3';
 const ASSETS = ['/Gastos/', '/Gastos/index.html', '/Gastos/manifest.json'];
 
 self.addEventListener('install', e => {
@@ -15,6 +15,6 @@ self.addEventListener('activate', e => {
 
 self.addEventListener('fetch', e => {
   e.respondWith(
-    caches.match(e.request).then(cached => cached || fetch(e.request))
+    fetch(e.request).catch(() => caches.match(e.request))
   );
 });
