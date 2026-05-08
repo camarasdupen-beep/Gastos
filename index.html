@@ -13,81 +13,58 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #0f0f0f;
-  --bg2: #1a1a1a;
-  --bg3: #242424;
-  --border: rgba(255,255,255,0.08);
-  --border2: rgba(255,255,255,0.14);
-  --text: #f0f0f0;
-  --text2: #888;
-  --text3: #555;
-  --green: #22c55e;
-  --green-bg: rgba(34,197,94,0.12);
-  --amber: #f59e0b;
-  --amber-bg: rgba(245,158,11,0.12);
-  --red: #ef4444;
-  --red-bg: rgba(239,68,68,0.12);
-  --blue: #60a5fa;
-  --blue-bg: rgba(96,165,250,0.12);
-  --accent: #22c55e;
-  --radius: 14px;
-  --radius-sm: 8px;
+  --bg: #0f0f0f; --bg2: #1a1a1a; --bg3: #242424;
+  --border: rgba(255,255,255,0.08); --border2: rgba(255,255,255,0.14);
+  --text: #f0f0f0; --text2: #888; --text3: #555;
+  --green: #22c55e; --green-bg: rgba(34,197,94,0.12);
+  --amber: #f59e0b; --amber-bg: rgba(245,158,11,0.12);
+  --red: #ef4444; --red-bg: rgba(239,68,68,0.12);
+  --blue: #60a5fa; --blue-bg: rgba(96,165,250,0.12);
+  --purple: #a78bfa; --purple-bg: rgba(167,139,250,0.12);
+  --accent: #22c55e; --radius: 14px; --radius-sm: 8px;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 html, body { height: 100%; background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; overflow-x: hidden; }
 body { padding-bottom: env(safe-area-inset-bottom, 0); }
 
-/* HEADER */
-.header {
-  position: sticky; top: 0; z-index: 10;
-  background: var(--bg);
-  border-bottom: 0.5px solid var(--border);
-  padding: 16px 20px 12px;
-}
+.header { position: sticky; top: 0; z-index: 10; background: var(--bg); border-bottom: 0.5px solid var(--border); padding: 16px 20px 12px; }
 .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
 .app-name { font-size: 20px; font-weight: 600; letter-spacing: -0.3px; }
 .add-fab { width: 38px; height: 38px; border-radius: 50%; background: var(--accent); border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; }
 .add-fab svg { width: 20px; height: 20px; stroke: #000; }
 
-/* MES NAV */
 .mes-nav { display: flex; align-items: center; justify-content: space-between; }
 .mes-btn { background: none; border: none; color: var(--text2); cursor: pointer; padding: 4px 8px; border-radius: 6px; }
 .mes-btn:active { background: var(--bg3); }
 .mes-label { font-family: 'DM Mono', monospace; font-size: 14px; font-weight: 500; color: var(--text); }
 
-/* STATS */
 .stats-wrap { padding: 16px 20px 0; }
 .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
 .stat { background: var(--bg2); border-radius: var(--radius-sm); padding: 10px 12px; border: 0.5px solid var(--border); }
 .stat-lbl { font-size: 11px; color: var(--text3); margin-bottom: 3px; font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.04em; }
 .stat-val { font-size: 16px; font-weight: 600; font-family: 'DM Mono', monospace; }
-.stat-val.g { color: var(--green); }
-.stat-val.a { color: var(--amber); }
-.stat-val.w { color: var(--text); }
+.stat-val.g { color: var(--green); } .stat-val.a { color: var(--amber); } .stat-val.w { color: var(--text); }
 
-/* PROGRESS */
 .prog-wrap { margin-bottom: 4px; }
 .prog-track { height: 3px; background: var(--bg3); border-radius: 2px; overflow: hidden; }
 .prog-fill { height: 100%; border-radius: 2px; background: var(--green); transition: width 0.5s cubic-bezier(.4,0,.2,1); }
 .prog-label { font-size: 11px; color: var(--text3); font-family: 'DM Mono', monospace; margin-top: 4px; text-align: right; }
 
-/* TABS */
 .tabs-wrap { padding: 12px 20px 0; }
 .tabs { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
 .tabs::-webkit-scrollbar { display: none; }
 .tab { flex-shrink: 0; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 500; cursor: pointer; border: 0.5px solid var(--border); background: none; color: var(--text2); transition: all 0.15s; }
 .tab.active { background: var(--text); color: var(--bg); border-color: var(--text); }
 
-/* LIST */
 .list-wrap { padding: 14px 20px; }
 .list { display: flex; flex-direction: column; gap: 8px; }
 
-/* GASTO CARD */
 .gasto { background: var(--bg2); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 14px; display: flex; align-items: center; gap: 12px; transition: opacity 0.2s; position: relative; overflow: hidden; }
 .gasto.pagado { opacity: 0.45; }
 .gasto.vencido { border-color: rgba(239,68,68,0.35); }
 .gasto.vencido::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--red); border-radius: 14px 0 0 14px; }
 .gasto.hoy::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--amber); border-radius: 14px 0 0 14px; }
+.gasto.recurrente::after { content: ''; position: absolute; right: 0; top: 0; bottom: 0; width: 3px; background: var(--purple); border-radius: 0 14px 14px 0; }
 
 .check { width: 24px; height: 24px; border-radius: 50%; border: 1.5px solid var(--border2); flex-shrink: 0; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.15s; }
 .check.on { background: var(--green); border-color: var(--green); }
@@ -104,6 +81,7 @@ body { padding-bottom: env(safe-area-inset-bottom, 0); }
 .badge.hoy { background: var(--amber-bg); color: var(--amber); }
 .badge.ok { background: var(--green-bg); color: var(--green); }
 .badge.rec { background: var(--blue-bg); color: var(--blue); }
+.badge.rep { background: var(--purple-bg); color: var(--purple); }
 
 .gasto-right { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; flex-shrink: 0; }
 .gasto-monto { font-family: 'DM Mono', monospace; font-size: 15px; font-weight: 500; }
@@ -116,15 +94,14 @@ body { padding-bottom: env(safe-area-inset-bottom, 0); }
 .empty svg { width: 40px; height: 40px; stroke: currentColor; margin: 0 auto 10px; display: block; opacity: 0.4; }
 .empty p { font-size: 14px; }
 
-/* MODAL */
-.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 50; display: flex; align-items: flex-end; transition: opacity 0.2s; }
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 50; display: flex; align-items: flex-end; }
 .modal-overlay.hidden { display: none; }
-.modal { background: var(--bg2); border-radius: 20px 20px 0 0; border: 0.5px solid var(--border); padding: 20px 20px calc(20px + env(safe-area-inset-bottom, 0)); width: 100%; max-height: 90vh; overflow-y: auto; }
+.modal { background: var(--bg2); border-radius: 20px 20px 0 0; border: 0.5px solid var(--border); padding: 20px 20px calc(20px + env(safe-area-inset-bottom, 0)); width: 100%; max-height: 92vh; overflow-y: auto; }
 .modal-handle { width: 36px; height: 4px; background: var(--border2); border-radius: 2px; margin: 0 auto 16px; }
 .modal-title { font-size: 17px; font-weight: 600; margin-bottom: 20px; }
 .field { margin-bottom: 14px; }
 .field label { display: block; font-size: 12px; color: var(--text3); font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
-.field input, .field select { width: 100%; background: var(--bg3); border: 0.5px solid var(--border); border-radius: var(--radius-sm); padding: 12px 14px; font-size: 16px; color: var(--text); font-family: 'DM Sans', sans-serif; outline: none; }
+.field input, .field select { width: 100%; background: var(--bg3); border: 0.5px solid var(--border); border-radius: var(--radius-sm); padding: 12px 14px; font-size: 16px; color: var(--text); font-family: 'DM Sans', sans-serif; outline: none; appearance: none; -webkit-appearance: none; }
 .field input:focus, .field select:focus { border-color: var(--accent); }
 .field input::placeholder { color: var(--text3); }
 .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -132,11 +109,17 @@ body { padding-bottom: env(safe-area-inset-bottom, 0); }
 .cat-opt { background: var(--bg3); border: 0.5px solid var(--border); border-radius: var(--radius-sm); padding: 10px 6px; text-align: center; cursor: pointer; font-size: 11px; color: var(--text2); line-height: 1.4; transition: all 0.15s; }
 .cat-opt svg { width: 20px; height: 20px; stroke: currentColor; display: block; margin: 0 auto 4px; }
 .cat-opt.sel { border-color: var(--accent); background: var(--green-bg); color: var(--green); }
+
+.rep-opciones { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.rep-opt { background: var(--bg3); border: 0.5px solid var(--border); border-radius: var(--radius-sm); padding: 8px 4px; text-align: center; cursor: pointer; font-size: 12px; color: var(--text2); transition: all 0.15s; }
+.rep-opt.sel { border-color: var(--purple); background: var(--purple-bg); color: var(--purple); }
+.rep-sub { margin-top: 10px; display: none; }
+.rep-sub.visible { display: block; }
+
 .modal-actions { display: flex; gap: 10px; margin-top: 20px; }
 .btn-save { flex: 1; background: var(--accent); color: #000; border: none; border-radius: var(--radius-sm); padding: 14px; font-size: 16px; font-weight: 600; cursor: pointer; }
 .btn-cancel { background: var(--bg3); color: var(--text2); border: 0.5px solid var(--border); border-radius: var(--radius-sm); padding: 14px 20px; font-size: 16px; cursor: pointer; }
 
-/* DELETE confirm */
 .del-sheet { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 60; display: flex; align-items: flex-end; }
 .del-sheet.hidden { display: none; }
 .del-box { background: var(--bg2); border-radius: 20px 20px 0 0; border: 0.5px solid var(--border); padding: 20px 20px calc(20px + env(safe-area-inset-bottom, 0)); width: 100%; }
@@ -144,8 +127,9 @@ body { padding-bottom: env(safe-area-inset-bottom, 0); }
 .del-box strong { color: var(--text); }
 .del-btns { display: flex; gap: 10px; }
 .btn-del { flex: 1; background: var(--red); color: #fff; border: none; border-radius: var(--radius-sm); padding: 14px; font-size: 16px; font-weight: 600; cursor: pointer; }
-
 select option { background: #1a1a1a; }
+
+.divider { font-size: 11px; color: var(--text3); font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.06em; margin: 4px 0 8px; }
 </style>
 </head>
 <body>
@@ -185,6 +169,7 @@ select option { background: #1a1a1a; }
     <button class="tab active" onclick="setTab('todos',this)">Todos</button>
     <button class="tab" onclick="setTab('pendientes',this)">Pendientes</button>
     <button class="tab" onclick="setTab('pagados',this)">Pagados</button>
+    <button class="tab" onclick="setTab('fijos',this)">Fijos</button>
     <button class="tab" onclick="setTab('recordatorios',this)">Recordatorios</button>
   </div>
 </div>
@@ -193,11 +178,12 @@ select option { background: #1a1a1a; }
   <div class="list" id="lista"></div>
 </div>
 
-<!-- MODAL AGREGAR/EDITAR -->
+<!-- MODAL -->
 <div class="modal-overlay hidden" id="modal" onclick="onOverlayClick(event)">
   <div class="modal">
     <div class="modal-handle"></div>
     <div class="modal-title" id="modal-title">Nuevo gasto</div>
+
     <div class="field">
       <label>Nombre</label>
       <input type="text" id="f-nombre" placeholder="ej. Electricidad, Netflix...">
@@ -208,10 +194,11 @@ select option { background: #1a1a1a; }
         <input type="number" id="f-monto" placeholder="0" inputmode="decimal">
       </div>
       <div class="field">
-        <label>Fecha límite</label>
-        <input type="date" id="f-fecha">
+        <label>Día de vencimiento</label>
+        <input type="number" id="f-dia" placeholder="ej. 15" min="1" max="31" inputmode="numeric">
       </div>
     </div>
+
     <div class="field">
       <label>Tipo</label>
       <div class="cat-grid">
@@ -229,6 +216,47 @@ select option { background: #1a1a1a; }
         </div>
       </div>
     </div>
+
+    <div class="field">
+      <label>Repetición</label>
+      <div class="rep-opciones">
+        <div class="rep-opt sel" data-rep="0" onclick="selRep(this)">No repetir</div>
+        <div class="rep-opt" data-rep="1" onclick="selRep(this)">Cada mes</div>
+        <div class="rep-opt" data-rep="2" onclick="selRep(this)">Cada 2 meses</div>
+        <div class="rep-opt" data-rep="3" onclick="selRep(this)">Cada 3 meses</div>
+        <div class="rep-opt" data-rep="6" onclick="selRep(this)">Cada 6 meses</div>
+        <div class="rep-opt" data-rep="12" onclick="selRep(this)">Cada año</div>
+      </div>
+      <div class="rep-sub" id="rep-sub">
+        <div class="field-row" style="margin-top:0">
+          <div class="field" style="margin-bottom:0">
+            <label>Mes inicio</label>
+            <select id="f-mes-inicio"></select>
+          </div>
+          <div class="field" style="margin-bottom:0">
+            <label>Termina</label>
+            <select id="f-fin-tipo" onchange="actualizarFinTipo()">
+              <option value="nunca">Nunca</option>
+              <option value="cuotas">Después de N cuotas</option>
+              <option value="fecha">En fecha</option>
+            </select>
+          </div>
+        </div>
+        <div id="fin-cuotas-wrap" style="display:none;margin-top:10px">
+          <div class="field" style="margin-bottom:0">
+            <label>Cantidad de cuotas</label>
+            <input type="number" id="f-cuotas" placeholder="ej. 12" min="1" inputmode="numeric">
+          </div>
+        </div>
+        <div id="fin-fecha-wrap" style="display:none;margin-top:10px">
+          <div class="field" style="margin-bottom:0">
+            <label>Fecha fin</label>
+            <input type="month" id="f-fin-fecha">
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="field">
       <label>Notas (opcional)</label>
       <input type="text" id="f-notas" placeholder="ej. Débito automático...">
@@ -240,42 +268,104 @@ select option { background: #1a1a1a; }
   </div>
 </div>
 
-<!-- DELETE CONFIRM -->
+<!-- DELETE -->
 <div class="del-sheet hidden" id="del-sheet">
   <div class="del-box">
     <p>¿Eliminar <strong id="del-nombre">este gasto</strong>?</p>
+    <div style="font-size:13px;color:var(--text3);text-align:center;margin-bottom:14px" id="del-rep-info"></div>
     <div class="del-btns">
       <button class="btn-cancel" onclick="cerrarDel()" style="flex:1">Cancelar</button>
-      <button class="btn-del" onclick="confirmarDel()">Eliminar</button>
+      <button class="btn-del" id="btn-del-este" onclick="confirmarDel('este')">Solo este mes</button>
+      <button class="btn-del" style="background:var(--red);opacity:0.7" id="btn-del-todos" onclick="confirmarDel('todos')">Todos</button>
     </div>
   </div>
 </div>
 
 <script>
 const MESES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-const KEY = 'mis_gastos_v1';
-let gastos = [];
+const KEY = 'mis_gastos_v2';
+// gastos base (plantillas para recurrentes)
+// instancias: overrides por mes (pagado, etc)
+let data = { bases: [], instancias: {} };
 let mes = new Date().getMonth();
 let anio = new Date().getFullYear();
 let tabActivo = 'todos';
 let editId = null;
 let delId = null;
 let catSel = 'servicio';
+let repSel = 0;
 
 function cargar() {
-  try { gastos = JSON.parse(localStorage.getItem(KEY) || '[]'); } catch(e) { gastos = []; }
+  try {
+    const raw = localStorage.getItem(KEY);
+    if (raw) data = JSON.parse(raw);
+    if (!data.bases) data.bases = [];
+    if (!data.instancias) data.instancias = {};
+  } catch(e) { data = { bases: [], instancias: {} }; }
 }
-function guardarLS() {
-  localStorage.setItem(KEY, JSON.stringify(gastos));
+function guardarLS() { localStorage.setItem(KEY, JSON.stringify(data)); }
+
+// Clave única por base+mes+año
+function iKey(baseId, m, a) { return `${baseId}_${a}_${m}`; }
+
+// Determina si una base aparece en un mes/año dado
+function apareceEn(b, m, a) {
+  if (b.rep === 0) return b.mes === m && b.anio === a;
+  // Calcular offset en meses desde inicio
+  const startTotal = b.anio * 12 + b.mes;
+  const targetTotal = a * 12 + m;
+  const diff = targetTotal - startTotal;
+  if (diff < 0) return false;
+  if (diff % b.rep !== 0) return false;
+  // Verificar fin
+  if (b.finTipo === 'cuotas') {
+    const cuota = diff / b.rep; // cuota 0-based
+    return cuota < b.finCuotas;
+  }
+  if (b.finTipo === 'fecha') {
+    const finTotal = b.finAnio * 12 + b.finMes;
+    return targetTotal <= finTotal;
+  }
+  return true; // nunca
 }
 
-function delMes() {
-  return gastos.filter(g => g.mes === mes && g.anio === anio);
+function gastosDelMes() {
+  return data.bases
+    .filter(b => apareceEn(b, mes, anio))
+    .map(b => {
+      const k = iKey(b.id, mes, anio);
+      const inst = data.instancias[k] || {};
+      // Calcular fecha límite para este mes si tiene día
+      let fecha = null;
+      if (b.dia) {
+        const d = Math.min(b.dia, new Date(anio, mes+1, 0).getDate());
+        fecha = `${anio}-${String(mes+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+      }
+      return { ...b, fecha, pagado: inst.pagado || false, _inst: k };
+    });
+}
+
+// Poblar select de mes inicio
+function poblarMesInicio() {
+  const sel = document.getElementById('f-mes-inicio');
+  sel.innerHTML = '';
+  const hoy = new Date();
+  for (let i = -2; i <= 12; i++) {
+    let m = hoy.getMonth() + i;
+    let a = hoy.getFullYear();
+    while (m < 0) { m += 12; a--; }
+    while (m > 11) { m -= 12; a++; }
+    const opt = document.createElement('option');
+    opt.value = `${a}-${m}`;
+    opt.textContent = MESES[m] + ' ' + a;
+    if (i === 0) opt.selected = true;
+    sel.appendChild(opt);
+  }
 }
 
 function render() {
   document.getElementById('mes-label').textContent = MESES[mes] + ' ' + anio;
-  const lista = delMes();
+  const lista = gastosDelMes();
   const conMonto = lista.filter(g => g.cat !== 'recordatorio');
   const total = conMonto.reduce((s,g) => s + (+g.monto||0), 0);
   const pagado = conMonto.filter(g=>g.pagado).reduce((s,g) => s + (+g.monto||0), 0);
@@ -292,12 +382,12 @@ function render() {
   let filtrada = lista;
   if (tabActivo === 'pendientes') filtrada = lista.filter(g => !g.pagado && g.cat !== 'recordatorio');
   if (tabActivo === 'pagados') filtrada = lista.filter(g => g.pagado);
+  if (tabActivo === 'fijos') filtrada = lista.filter(g => g.rep > 0);
   if (tabActivo === 'recordatorios') filtrada = lista.filter(g => g.cat === 'recordatorio');
 
   filtrada.sort((a,b) => {
     if (!a.fecha && !b.fecha) return 0;
-    if (!a.fecha) return 1;
-    if (!b.fecha) return -1;
+    if (!a.fecha) return 1; if (!b.fecha) return -1;
     return new Date(a.fecha) - new Date(b.fecha);
   });
 
@@ -309,26 +399,30 @@ function render() {
 
   el.innerHTML = filtrada.map(g => {
     const fecha = g.fecha ? new Date(g.fecha + 'T00:00:00') : null;
-    const diff = fecha ? Math.round((fecha - hoy)/(86400000)) : null;
+    const diff = fecha ? Math.round((fecha - hoy)/86400000) : null;
     const esVencido = !g.pagado && diff !== null && diff < 0;
     const esHoy = !g.pagado && diff === 0;
+    const esRec = g.rep > 0;
     let badge = '';
     if (g.cat === 'recordatorio') badge = `<span class="badge rec">Recordatorio</span>`;
     else if (esVencido) badge = `<span class="badge vencido">Vencido</span>`;
     else if (esHoy) badge = `<span class="badge hoy">Hoy</span>`;
     else if (g.pagado) badge = `<span class="badge ok">Pagado</span>`;
+    const repLabel = esRec ? repTexto(g.rep) : '';
     const fechaStr = fecha ? fecha.toLocaleDateString('es-AR',{day:'numeric',month:'short'}) : '';
+    const clases = ['gasto', g.pagado?'pagado':'', esVencido?'vencido':'', esHoy?'hoy':'', esRec?'recurrente':''].filter(Boolean).join(' ');
 
     return `
-    <div class="gasto${g.pagado?' pagado':''}${esVencido?' vencido':''}${esHoy?' hoy':''}">
-      <div class="check${g.pagado?' on':''}" onclick="togglePago('${g.id}')" role="checkbox" aria-checked="${g.pagado}" aria-label="Marcar pagado">
+    <div class="${clases}">
+      <div class="check${g.pagado?' on':''}" onclick="togglePago('${g.id}')" role="checkbox" aria-checked="${g.pagado}">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
       </div>
       <div class="gasto-body">
         <div class="gasto-nombre">${g.nombre}</div>
         <div class="gasto-meta">
-          ${fechaStr ? `<span class="gasto-fecha">${fechaStr}</span>` : ''}
+          ${fechaStr ? `<span class="gasto-fecha">vence ${fechaStr}</span>` : ''}
           ${badge}
+          ${repLabel ? `<span class="badge rep">↻ ${repLabel}</span>` : ''}
           ${g.notas ? `<span class="gasto-fecha">· ${g.notas}</span>` : ''}
         </div>
       </div>
@@ -338,7 +432,7 @@ function render() {
           <button class="icon-btn" onclick="editar('${g.id}')" aria-label="Editar">
             <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
           </button>
-          <button class="icon-btn" onclick="pedirDel('${g.id}','${g.nombre.replace(/'/g,"\\'")}');" aria-label="Eliminar">
+          <button class="icon-btn" onclick="pedirDel('${g.id}','${g.nombre.replace(/'/g,"\\'")}',${g.rep>0})" aria-label="Eliminar">
             <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
           </button>
         </div>
@@ -347,34 +441,72 @@ function render() {
   }).join('');
 }
 
+function repTexto(r) {
+  if (r === 1) return 'mensual';
+  if (r === 2) return 'bimestral';
+  if (r === 3) return 'trimestral';
+  if (r === 6) return 'semestral';
+  if (r === 12) return 'anual';
+  return `cada ${r}m`;
+}
+
 function togglePago(id) {
-  const g = gastos.find(x=>x.id===id);
+  const g = gastosDelMes().find(x=>x.id===id);
   if (!g || g.cat==='recordatorio') return;
-  g.pagado = !g.pagado;
+  const k = g._inst;
+  if (!data.instancias[k]) data.instancias[k] = {};
+  data.instancias[k].pagado = !g.pagado;
   guardarLS(); render();
 }
 
-function pedirDel(id, nombre) {
+function pedirDel(id, nombre, esRec) {
   delId = id;
   document.getElementById('del-nombre').textContent = nombre;
+  document.getElementById('del-rep-info').textContent = esRec ? 'Este es un gasto recurrente.' : '';
+  document.getElementById('btn-del-este').style.display = esRec ? '' : 'none';
+  document.getElementById('btn-del-todos').textContent = esRec ? 'Todos los meses' : 'Eliminar';
   document.getElementById('del-sheet').classList.remove('hidden');
 }
 function cerrarDel() { document.getElementById('del-sheet').classList.add('hidden'); delId = null; }
-function confirmarDel() {
-  gastos = gastos.filter(x=>x.id!==delId);
+function confirmarDel(modo) {
+  if (modo === 'este') {
+    // Marcar esta instancia como eliminada
+    const g = gastosDelMes().find(x=>x.id===delId);
+    if (g) {
+      const k = g._inst;
+      if (!data.instancias[k]) data.instancias[k] = {};
+      data.instancias[k].eliminado = true;
+    }
+  } else {
+    data.bases = data.bases.filter(x=>x.id!==delId);
+    // Limpiar instancias
+    Object.keys(data.instancias).forEach(k => { if (k.startsWith(delId+'_')) delete data.instancias[k]; });
+  }
   guardarLS(); cerrarDel(); render();
 }
 
 function editar(id) {
-  const g = gastos.find(x=>x.id===id);
-  if (!g) return;
+  const b = data.bases.find(x=>x.id===id);
+  if (!b) return;
   editId = id;
-  document.getElementById('f-nombre').value = g.nombre;
-  document.getElementById('f-monto').value = g.monto;
-  document.getElementById('f-fecha').value = g.fecha || '';
-  document.getElementById('f-notas').value = g.notas || '';
-  catSel = g.cat;
-  document.querySelectorAll('.cat-opt').forEach(el => el.classList.toggle('sel', el.dataset.cat === g.cat));
+  document.getElementById('f-nombre').value = b.nombre;
+  document.getElementById('f-monto').value = b.monto;
+  document.getElementById('f-dia').value = b.dia || '';
+  document.getElementById('f-notas').value = b.notas || '';
+  catSel = b.cat;
+  repSel = b.rep || 0;
+  document.querySelectorAll('.cat-opt').forEach(el => el.classList.toggle('sel', el.dataset.cat === b.cat));
+  document.querySelectorAll('.rep-opt').forEach(el => el.classList.toggle('sel', +el.dataset.rep === repSel));
+  actualizarRepSub();
+  poblarMesInicio();
+  // Set mes inicio
+  const msVal = `${b.anio}-${b.mes}`;
+  const opt = document.querySelector(`#f-mes-inicio option[value="${msVal}"]`);
+  if (opt) opt.selected = true;
+  document.getElementById('f-fin-tipo').value = b.finTipo || 'nunca';
+  actualizarFinTipo();
+  if (b.finTipo === 'cuotas') document.getElementById('f-cuotas').value = b.finCuotas || '';
+  if (b.finTipo === 'fecha') document.getElementById('f-fin-fecha').value = `${b.finAnio}-${String(b.finMes+1).padStart(2,'0')}`;
   document.getElementById('modal-title').textContent = 'Editar gasto';
   document.getElementById('modal').classList.remove('hidden');
 }
@@ -383,62 +515,106 @@ function abrirModal() {
   editId = null;
   document.getElementById('f-nombre').value = '';
   document.getElementById('f-monto').value = '';
-  document.getElementById('f-fecha').value = '';
+  document.getElementById('f-dia').value = '';
   document.getElementById('f-notas').value = '';
-  catSel = 'servicio';
+  catSel = 'servicio'; repSel = 0;
   document.querySelectorAll('.cat-opt').forEach(el => el.classList.toggle('sel', el.dataset.cat==='servicio'));
+  document.querySelectorAll('.rep-opt').forEach(el => el.classList.toggle('sel', el.dataset.rep==='0'));
+  actualizarRepSub();
+  poblarMesInicio();
+  document.getElementById('f-fin-tipo').value = 'nunca';
+  actualizarFinTipo();
   document.getElementById('modal-title').textContent = 'Nuevo gasto';
   document.getElementById('modal').classList.remove('hidden');
   setTimeout(() => document.getElementById('f-nombre').focus(), 100);
 }
 
 function cerrarModal() { document.getElementById('modal').classList.add('hidden'); }
-
-function onOverlayClick(e) {
-  if (e.target === document.getElementById('modal')) cerrarModal();
-}
+function onOverlayClick(e) { if (e.target === document.getElementById('modal')) cerrarModal(); }
 
 function selCat(el) {
   catSel = el.dataset.cat;
-  document.querySelectorAll('.cat-opt').forEach(x => x.classList.remove('sel'));
+  document.querySelectorAll('.cat-opt').forEach(x=>x.classList.remove('sel'));
   el.classList.add('sel');
+}
+
+function selRep(el) {
+  repSel = +el.dataset.rep;
+  document.querySelectorAll('.rep-opt').forEach(x=>x.classList.remove('sel'));
+  el.classList.add('sel');
+  actualizarRepSub();
+}
+
+function actualizarRepSub() {
+  document.getElementById('rep-sub').classList.toggle('visible', repSel > 0);
+}
+
+function actualizarFinTipo() {
+  const v = document.getElementById('f-fin-tipo').value;
+  document.getElementById('fin-cuotas-wrap').style.display = v === 'cuotas' ? '' : 'none';
+  document.getElementById('fin-fecha-wrap').style.display = v === 'fecha' ? '' : 'none';
 }
 
 function guardar() {
   const nombre = document.getElementById('f-nombre').value.trim();
   if (!nombre) { document.getElementById('f-nombre').focus(); return; }
   const monto = parseFloat(document.getElementById('f-monto').value) || 0;
-  const fecha = document.getElementById('f-fecha').value;
+  const dia = parseInt(document.getElementById('f-dia').value) || null;
   const notas = document.getElementById('f-notas').value.trim();
+  const finTipo = document.getElementById('f-fin-tipo').value;
+
+  // Mes inicio
+  const mesInicioVal = document.getElementById('f-mes-inicio').value; // "anio-mes"
+  const [mIa, mIm] = mesInicioVal.split('-').map(Number);
+
+  let finCuotas = null, finMes = null, finAnio = null;
+  if (finTipo === 'cuotas') finCuotas = parseInt(document.getElementById('f-cuotas').value) || 1;
+  if (finTipo === 'fecha') {
+    const fv = document.getElementById('f-fin-fecha').value;
+    if (fv) { const [fa, fm] = fv.split('-'); finAnio = +fa; finMes = +fm - 1; }
+  }
+
+  const base = { nombre, monto, dia, notas, cat: catSel, rep: repSel,
+    mes: repSel > 0 ? mIm : mes, anio: repSel > 0 ? mIa : anio,
+    finTipo, finCuotas, finMes, finAnio };
+
   if (editId) {
-    const g = gastos.find(x=>x.id===editId);
-    if (g) Object.assign(g, { nombre, monto, fecha, notas, cat: catSel });
+    const idx = data.bases.findIndex(x=>x.id===editId);
+    if (idx >= 0) data.bases[idx] = { ...data.bases[idx], ...base };
   } else {
-    gastos.push({ id: Date.now().toString(), nombre, monto, fecha, notas, cat: catSel, pagado: false, mes, anio });
+    data.bases.push({ id: Date.now().toString(), ...base });
   }
   guardarLS(); cerrarModal(); render();
 }
 
 function setTab(tab, el) {
   tabActivo = tab;
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   el.classList.add('active');
   render();
 }
 
 function cambiarMes(dir) {
-  mes += dir;
-  if (mes > 11) { mes = 0; anio++; }
-  if (mes < 0) { mes = 11; anio--; }
+  mes += dir; if (mes>11){mes=0;anio++;} if (mes<0){mes=11;anio--;}
   render();
 }
+
+// Filtrar instancias eliminadas en render
+const _origGastosDel = gastosDelMes;
+function gastosDelMesFiltrado() {
+  return gastosDelMes().filter(g => {
+    const inst = data.instancias[g._inst] || {};
+    return !inst.eliminado;
+  });
+}
+
+// Override
+window.gastosDelMes = gastosDelMesFiltrado;
 
 cargar(); render();
 
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('sw.js');
-  });
+  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js'));
 }
 </script>
 </body>
