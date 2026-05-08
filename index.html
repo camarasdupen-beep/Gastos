@@ -139,6 +139,21 @@ body{padding-bottom:env(safe-area-inset-bottom,0);}
 .del-btns{display:flex;gap:10px;}
 .btn-del{flex:1;background:var(--red);color:#fff;border:none;border-radius:var(--radius-sm);padding:14px;font-size:15px;font-weight:600;cursor:pointer;}
 select option{background:#1a1a1a;}
+/* SABADOS */
+.sabados-wrap{padding:0 20px 14px;display:none;}
+.sabados-wrap.visible{display:block;}
+.sabados-title{font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;}
+.sabados-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;}
+.sab-btn{background:var(--bg2);border:0.5px solid var(--border);border-radius:10px;padding:10px 4px;text-align:center;cursor:pointer;transition:all 0.15s;position:relative;}
+.sab-btn.elegido{background:rgba(96,165,250,0.15);border-color:var(--blue);}
+.sab-num{font-family:'DM Mono',monospace;font-size:18px;font-weight:500;color:var(--text);line-height:1;}
+.sab-label{font-size:10px;color:var(--text3);margin-top:3px;}
+.sab-btn.elegido .sab-num{color:var(--blue);}
+.sab-btn.elegido .sab-label{color:var(--blue);}
+.sab-check{position:absolute;top:4px;right:4px;width:14px;height:14px;background:var(--blue);border-radius:50%;display:none;align-items:center;justify-content:center;}
+.sab-btn.elegido .sab-check{display:flex;}
+.sab-check svg{width:9px;height:9px;stroke:#000;}
+
 </style>
 </head>
 <body>
@@ -180,6 +195,12 @@ select option{background:#1a1a1a;}
     <div class="prog-track"><div class="prog-fill" id="prog" style="width:0%"></div></div>
     <div class="prog-label" id="prog-label">0% pagado</div>
   </div>
+</div>
+
+
+<div class="sabados-wrap" id="sabados-wrap">
+  <div class="sabados-title">📅 Sábado de la empleada</div>
+  <div class="sabados-grid" id="sabados-grid"></div>
 </div>
 
 <div class="tabs-wrap">
@@ -335,6 +356,7 @@ function cargar(){
     }
     if(!data.personal.bases) data.personal={bases:[],instancias:{}};
     if(!data.raiden.bases) data.raiden={bases:[],instancias:{}};
+    if(!data.sabados) data.sabados={};
   }catch(e){data={personal:{bases:[],instancias:{}},raiden:{bases:[],instancias:{}}};}
 }
 function guardarLS(){localStorage.setItem(KEY,JSON.stringify({...data,perfil,mes,anio}));}
@@ -462,6 +484,7 @@ function render(){
       </div>
     </div>`;
   }).join('');
+  renderSabados();
 }
 
 function repTexto(r){
@@ -584,6 +607,49 @@ function setTab(tab,el){
 function cambiarMes(dir){
   mes+=dir;if(mes>11){mes=0;anio++;}if(mes<0){mes=11;anio--;}
   guardarLS();render();
+}
+
+
+function getSabados(m, a) {
+  const sabs = [];
+  const diasEnMes = new Date(a, m + 1, 0).getDate();
+  for (let d = 1; d <= diasEnMes; d++) {
+    const fecha = new Date(a, m, d);
+    if (fecha.getDay() === 6) sabs.push(d);
+  }
+  return sabs;
+}
+
+function sabKey(m, a) { return `sab_${a}_${m}`; }
+
+function renderSabados() {
+  const wrap = document.getElementById('sabados-wrap');
+  const grid = document.getElementById('sabados-grid');
+  if (perfil !== 'raiden') { wrap.classList.remove('visible'); return; }
+  wrap.classList.add('visible');
+  const sabs = getSabados(mes, anio);
+  const k = sabKey(mes, anio);
+  const elegido = (data.sabados && data.sabados[k]) || null;
+  const DIAS_ES = ['dom','lun','mar','mié','jue','vie','sáb'];
+  grid.innerHTML = sabs.map(d => {
+    const fecha = new Date(anio, mes, d);
+    const mesStr = String(mes+1).padStart(2,'0');
+    const key = `${anio}-${mesStr}-${String(d).padStart(2,'0')}`;
+    const sel = elegido === key;
+    return `<div class="sab-btn${sel?' elegido':''}" onclick="toggleSabado('${key}')">
+      <div class="sab-check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="sab-num">${d}</div>
+      <div class="sab-label">sáb</div>
+    </div>`;
+  }).join('');
+}
+
+function toggleSabado(key) {
+  if (!data.sabados) data.sabados = {};
+  const k = sabKey(mes, anio);
+  data.sabados[k] = (data.sabados[k] === key) ? null : key;
+  guardarLS();
+  renderSabados();
 }
 
 cargar();
