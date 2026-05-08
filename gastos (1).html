@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0f0f0f">
+<meta name="mobile-web-app-capable" content="yes">
+<title>Mis Gastos</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='120' fill='%230f0f0f'/%3E%3Crect x='60' y='60' width='392' height='392' rx='80' fill='%231a1a1a'/%3E%3Ctext x='256' y='320' font-size='240' text-anchor='middle' font-family='sans-serif'%3E💸%3C/text%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='120' fill='%230f0f0f'/%3E%3Crect x='60' y='60' width='392' height='392' rx='80' fill='%231a1a1a'/%3E%3Ctext x='256' y='320' font-size='240' text-anchor='middle' font-family='sans-serif'%3E💸%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f0f0f;
+  --bg2: #1a1a1a;
+  --bg3: #242424;
+  --border: rgba(255,255,255,0.08);
+  --border2: rgba(255,255,255,0.14);
+  --text: #f0f0f0;
+  --text2: #888;
+  --text3: #555;
+  --green: #22c55e;
+  --green-bg: rgba(34,197,94,0.12);
+  --amber: #f59e0b;
+  --amber-bg: rgba(245,158,11,0.12);
+  --red: #ef4444;
+  --red-bg: rgba(239,68,68,0.12);
+  --blue: #60a5fa;
+  --blue-bg: rgba(96,165,250,0.12);
+  --accent: #22c55e;
+  --radius: 14px;
+  --radius-sm: 8px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; overflow-x: hidden; }
+body { padding-bottom: env(safe-area-inset-bottom, 0); }
+
+/* HEADER */
+.header {
+  position: sticky; top: 0; z-index: 10;
+  background: var(--bg);
+  border-bottom: 0.5px solid var(--border);
+  padding: 16px 20px 12px;
+}
+.header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.app-name { font-size: 20px; font-weight: 600; letter-spacing: -0.3px; }
+.add-fab { width: 38px; height: 38px; border-radius: 50%; background: var(--accent); border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.add-fab svg { width: 20px; height: 20px; stroke: #000; }
+
+/* MES NAV */
+.mes-nav { display: flex; align-items: center; justify-content: space-between; }
+.mes-btn { background: none; border: none; color: var(--text2); cursor: pointer; padding: 4px 8px; border-radius: 6px; }
+.mes-btn:active { background: var(--bg3); }
+.mes-label { font-family: 'DM Mono', monospace; font-size: 14px; font-weight: 500; color: var(--text); }
+
+/* STATS */
+.stats-wrap { padding: 16px 20px 0; }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
+.stat { background: var(--bg2); border-radius: var(--radius-sm); padding: 10px 12px; border: 0.5px solid var(--border); }
+.stat-lbl { font-size: 11px; color: var(--text3); margin-bottom: 3px; font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.04em; }
+.stat-val { font-size: 16px; font-weight: 600; font-family: 'DM Mono', monospace; }
+.stat-val.g { color: var(--green); }
+.stat-val.a { color: var(--amber); }
+.stat-val.w { color: var(--text); }
+
+/* PROGRESS */
+.prog-wrap { margin-bottom: 4px; }
+.prog-track { height: 3px; background: var(--bg3); border-radius: 2px; overflow: hidden; }
+.prog-fill { height: 100%; border-radius: 2px; background: var(--green); transition: width 0.5s cubic-bezier(.4,0,.2,1); }
+.prog-label { font-size: 11px; color: var(--text3); font-family: 'DM Mono', monospace; margin-top: 4px; text-align: right; }
+
+/* TABS */
+.tabs-wrap { padding: 12px 20px 0; }
+.tabs { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
+.tabs::-webkit-scrollbar { display: none; }
+.tab { flex-shrink: 0; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 500; cursor: pointer; border: 0.5px solid var(--border); background: none; color: var(--text2); transition: all 0.15s; }
+.tab.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+
+/* LIST */
+.list-wrap { padding: 14px 20px; }
+.list { display: flex; flex-direction: column; gap: 8px; }
+
+/* GASTO CARD */
+.gasto { background: var(--bg2); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 14px; display: flex; align-items: center; gap: 12px; transition: opacity 0.2s; position: relative; overflow: hidden; }
+.gasto.pagado { opacity: 0.45; }
+.gasto.vencido { border-color: rgba(239,68,68,0.35); }
+.gasto.vencido::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--red); border-radius: 14px 0 0 14px; }
+.gasto.hoy::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--amber); border-radius: 14px 0 0 14px; }
+
+.check { width: 24px; height: 24px; border-radius: 50%; border: 1.5px solid var(--border2); flex-shrink: 0; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.15s; }
+.check.on { background: var(--green); border-color: var(--green); }
+.check svg { width: 13px; height: 13px; stroke: #000; display: none; }
+.check.on svg { display: block; }
+
+.gasto-body { flex: 1; min-width: 0; }
+.gasto-nombre { font-size: 15px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gasto.pagado .gasto-nombre { text-decoration: line-through; color: var(--text2); }
+.gasto-meta { display: flex; gap: 6px; align-items: center; margin-top: 3px; flex-wrap: wrap; }
+.gasto-fecha { font-size: 12px; color: var(--text3); font-family: 'DM Mono', monospace; }
+.badge { font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.04em; }
+.badge.vencido { background: var(--red-bg); color: var(--red); }
+.badge.hoy { background: var(--amber-bg); color: var(--amber); }
+.badge.ok { background: var(--green-bg); color: var(--green); }
+.badge.rec { background: var(--blue-bg); color: var(--blue); }
+
+.gasto-right { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; flex-shrink: 0; }
+.gasto-monto { font-family: 'DM Mono', monospace; font-size: 15px; font-weight: 500; }
+.gasto-actions { display: flex; gap: 4px; }
+.icon-btn { background: none; border: none; cursor: pointer; padding: 4px; color: var(--text3); border-radius: 6px; display: flex; align-items: center; }
+.icon-btn:active { background: var(--bg3); color: var(--text); }
+.icon-btn svg { width: 16px; height: 16px; stroke: currentColor; }
+
+.empty { text-align: center; padding: 3rem 1rem; color: var(--text3); }
+.empty svg { width: 40px; height: 40px; stroke: currentColor; margin: 0 auto 10px; display: block; opacity: 0.4; }
+.empty p { font-size: 14px; }
+
+/* MODAL */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 50; display: flex; align-items: flex-end; transition: opacity 0.2s; }
+.modal-overlay.hidden { display: none; }
+.modal { background: var(--bg2); border-radius: 20px 20px 0 0; border: 0.5px solid var(--border); padding: 20px 20px calc(20px + env(safe-area-inset-bottom, 0)); width: 100%; max-height: 90vh; overflow-y: auto; }
+.modal-handle { width: 36px; height: 4px; background: var(--border2); border-radius: 2px; margin: 0 auto 16px; }
+.modal-title { font-size: 17px; font-weight: 600; margin-bottom: 20px; }
+.field { margin-bottom: 14px; }
+.field label { display: block; font-size: 12px; color: var(--text3); font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+.field input, .field select { width: 100%; background: var(--bg3); border: 0.5px solid var(--border); border-radius: var(--radius-sm); padding: 12px 14px; font-size: 16px; color: var(--text); font-family: 'DM Sans', sans-serif; outline: none; }
+.field input:focus, .field select:focus { border-color: var(--accent); }
+.field input::placeholder { color: var(--text3); }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.cat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.cat-opt { background: var(--bg3); border: 0.5px solid var(--border); border-radius: var(--radius-sm); padding: 10px 6px; text-align: center; cursor: pointer; font-size: 11px; color: var(--text2); line-height: 1.4; transition: all 0.15s; }
+.cat-opt svg { width: 20px; height: 20px; stroke: currentColor; display: block; margin: 0 auto 4px; }
+.cat-opt.sel { border-color: var(--accent); background: var(--green-bg); color: var(--green); }
+.modal-actions { display: flex; gap: 10px; margin-top: 20px; }
+.btn-save { flex: 1; background: var(--accent); color: #000; border: none; border-radius: var(--radius-sm); padding: 14px; font-size: 16px; font-weight: 600; cursor: pointer; }
+.btn-cancel { background: var(--bg3); color: var(--text2); border: 0.5px solid var(--border); border-radius: var(--radius-sm); padding: 14px 20px; font-size: 16px; cursor: pointer; }
+
+/* DELETE confirm */
+.del-sheet { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 60; display: flex; align-items: flex-end; }
+.del-sheet.hidden { display: none; }
+.del-box { background: var(--bg2); border-radius: 20px 20px 0 0; border: 0.5px solid var(--border); padding: 20px 20px calc(20px + env(safe-area-inset-bottom, 0)); width: 100%; }
+.del-box p { font-size: 15px; color: var(--text2); margin-bottom: 16px; text-align: center; }
+.del-box strong { color: var(--text); }
+.del-btns { display: flex; gap: 10px; }
+.btn-del { flex: 1; background: var(--red); color: #fff; border: none; border-radius: var(--radius-sm); padding: 14px; font-size: 16px; font-weight: 600; cursor: pointer; }
+
+select option { background: #1a1a1a; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div class="app-name">💸 Mis Gastos</div>
+    <button class="add-fab" onclick="abrirModal()" aria-label="Agregar gasto">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    </button>
+  </div>
+  <div class="mes-nav">
+    <button class="mes-btn" onclick="cambiarMes(-1)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <span class="mes-label" id="mes-label">—</span>
+    <button class="mes-btn" onclick="cambiarMes(1)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+  </div>
+</div>
+
+<div class="stats-wrap">
+  <div class="stats">
+    <div class="stat"><div class="stat-lbl">Total</div><div class="stat-val w" id="s-total">$0</div></div>
+    <div class="stat"><div class="stat-lbl">Pagado</div><div class="stat-val g" id="s-pagado">$0</div></div>
+    <div class="stat"><div class="stat-lbl">Pendiente</div><div class="stat-val a" id="s-pend">$0</div></div>
+  </div>
+  <div class="prog-wrap">
+    <div class="prog-track"><div class="prog-fill" id="prog" style="width:0%"></div></div>
+    <div class="prog-label" id="prog-label">0% pagado</div>
+  </div>
+</div>
+
+<div class="tabs-wrap">
+  <div class="tabs">
+    <button class="tab active" onclick="setTab('todos',this)">Todos</button>
+    <button class="tab" onclick="setTab('pendientes',this)">Pendientes</button>
+    <button class="tab" onclick="setTab('pagados',this)">Pagados</button>
+    <button class="tab" onclick="setTab('recordatorios',this)">Recordatorios</button>
+  </div>
+</div>
+
+<div class="list-wrap">
+  <div class="list" id="lista"></div>
+</div>
+
+<!-- MODAL AGREGAR/EDITAR -->
+<div class="modal-overlay hidden" id="modal" onclick="onOverlayClick(event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="modal-title">Nuevo gasto</div>
+    <div class="field">
+      <label>Nombre</label>
+      <input type="text" id="f-nombre" placeholder="ej. Electricidad, Netflix...">
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>Monto ($)</label>
+        <input type="number" id="f-monto" placeholder="0" inputmode="decimal">
+      </div>
+      <div class="field">
+        <label>Fecha límite</label>
+        <input type="date" id="f-fecha">
+      </div>
+    </div>
+    <div class="field">
+      <label>Tipo</label>
+      <div class="cat-grid">
+        <div class="cat-opt sel" data-cat="servicio" onclick="selCat(this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>Servicio
+        </div>
+        <div class="cat-opt" data-cat="suscripcion" onclick="selCat(this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>Suscripción
+        </div>
+        <div class="cat-opt" data-cat="cuota" onclick="selCat(this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>Cuota
+        </div>
+        <div class="cat-opt" data-cat="recordatorio" onclick="selCat(this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>Recordatorio
+        </div>
+      </div>
+    </div>
+    <div class="field">
+      <label>Notas (opcional)</label>
+      <input type="text" id="f-notas" placeholder="ej. Débito automático...">
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="cerrarModal()">Cancelar</button>
+      <button class="btn-save" onclick="guardar()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- DELETE CONFIRM -->
+<div class="del-sheet hidden" id="del-sheet">
+  <div class="del-box">
+    <p>¿Eliminar <strong id="del-nombre">este gasto</strong>?</p>
+    <div class="del-btns">
+      <button class="btn-cancel" onclick="cerrarDel()" style="flex:1">Cancelar</button>
+      <button class="btn-del" onclick="confirmarDel()">Eliminar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const MESES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+const KEY = 'mis_gastos_v1';
+let gastos = [];
+let mes = new Date().getMonth();
+let anio = new Date().getFullYear();
+let tabActivo = 'todos';
+let editId = null;
+let delId = null;
+let catSel = 'servicio';
+
+function cargar() {
+  try { gastos = JSON.parse(localStorage.getItem(KEY) || '[]'); } catch(e) { gastos = []; }
+}
+function guardarLS() {
+  localStorage.setItem(KEY, JSON.stringify(gastos));
+}
+
+function delMes() {
+  return gastos.filter(g => g.mes === mes && g.anio === anio);
+}
+
+function render() {
+  document.getElementById('mes-label').textContent = MESES[mes] + ' ' + anio;
+  const lista = delMes();
+  const conMonto = lista.filter(g => g.cat !== 'recordatorio');
+  const total = conMonto.reduce((s,g) => s + (+g.monto||0), 0);
+  const pagado = conMonto.filter(g=>g.pagado).reduce((s,g) => s + (+g.monto||0), 0);
+  const pend = total - pagado;
+  const pct = total > 0 ? Math.round(pagado/total*100) : 0;
+
+  document.getElementById('s-total').textContent = '$' + total.toLocaleString('es-AR');
+  document.getElementById('s-pagado').textContent = '$' + pagado.toLocaleString('es-AR');
+  document.getElementById('s-pend').textContent = '$' + pend.toLocaleString('es-AR');
+  document.getElementById('prog').style.width = pct + '%';
+  document.getElementById('prog-label').textContent = pct + '% pagado';
+
+  const hoy = new Date(); hoy.setHours(0,0,0,0);
+  let filtrada = lista;
+  if (tabActivo === 'pendientes') filtrada = lista.filter(g => !g.pagado && g.cat !== 'recordatorio');
+  if (tabActivo === 'pagados') filtrada = lista.filter(g => g.pagado);
+  if (tabActivo === 'recordatorios') filtrada = lista.filter(g => g.cat === 'recordatorio');
+
+  filtrada.sort((a,b) => {
+    if (!a.fecha && !b.fecha) return 0;
+    if (!a.fecha) return 1;
+    if (!b.fecha) return -1;
+    return new Date(a.fecha) - new Date(b.fecha);
+  });
+
+  const el = document.getElementById('lista');
+  if (!filtrada.length) {
+    el.innerHTML = `<div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="13" x2="13" y2="13"/></svg><p>Sin gastos aquí</p></div>`;
+    return;
+  }
+
+  el.innerHTML = filtrada.map(g => {
+    const fecha = g.fecha ? new Date(g.fecha + 'T00:00:00') : null;
+    const diff = fecha ? Math.round((fecha - hoy)/(86400000)) : null;
+    const esVencido = !g.pagado && diff !== null && diff < 0;
+    const esHoy = !g.pagado && diff === 0;
+    let badge = '';
+    if (g.cat === 'recordatorio') badge = `<span class="badge rec">Recordatorio</span>`;
+    else if (esVencido) badge = `<span class="badge vencido">Vencido</span>`;
+    else if (esHoy) badge = `<span class="badge hoy">Hoy</span>`;
+    else if (g.pagado) badge = `<span class="badge ok">Pagado</span>`;
+    const fechaStr = fecha ? fecha.toLocaleDateString('es-AR',{day:'numeric',month:'short'}) : '';
+
+    return `
+    <div class="gasto${g.pagado?' pagado':''}${esVencido?' vencido':''}${esHoy?' hoy':''}">
+      <div class="check${g.pagado?' on':''}" onclick="togglePago('${g.id}')" role="checkbox" aria-checked="${g.pagado}" aria-label="Marcar pagado">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="gasto-body">
+        <div class="gasto-nombre">${g.nombre}</div>
+        <div class="gasto-meta">
+          ${fechaStr ? `<span class="gasto-fecha">${fechaStr}</span>` : ''}
+          ${badge}
+          ${g.notas ? `<span class="gasto-fecha">· ${g.notas}</span>` : ''}
+        </div>
+      </div>
+      <div class="gasto-right">
+        ${g.cat !== 'recordatorio' ? `<div class="gasto-monto">$${(+g.monto||0).toLocaleString('es-AR')}</div>` : ''}
+        <div class="gasto-actions">
+          <button class="icon-btn" onclick="editar('${g.id}')" aria-label="Editar">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          </button>
+          <button class="icon-btn" onclick="pedirDel('${g.id}','${g.nombre.replace(/'/g,"\\'")}');" aria-label="Eliminar">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function togglePago(id) {
+  const g = gastos.find(x=>x.id===id);
+  if (!g || g.cat==='recordatorio') return;
+  g.pagado = !g.pagado;
+  guardarLS(); render();
+}
+
+function pedirDel(id, nombre) {
+  delId = id;
+  document.getElementById('del-nombre').textContent = nombre;
+  document.getElementById('del-sheet').classList.remove('hidden');
+}
+function cerrarDel() { document.getElementById('del-sheet').classList.add('hidden'); delId = null; }
+function confirmarDel() {
+  gastos = gastos.filter(x=>x.id!==delId);
+  guardarLS(); cerrarDel(); render();
+}
+
+function editar(id) {
+  const g = gastos.find(x=>x.id===id);
+  if (!g) return;
+  editId = id;
+  document.getElementById('f-nombre').value = g.nombre;
+  document.getElementById('f-monto').value = g.monto;
+  document.getElementById('f-fecha').value = g.fecha || '';
+  document.getElementById('f-notas').value = g.notas || '';
+  catSel = g.cat;
+  document.querySelectorAll('.cat-opt').forEach(el => el.classList.toggle('sel', el.dataset.cat === g.cat));
+  document.getElementById('modal-title').textContent = 'Editar gasto';
+  document.getElementById('modal').classList.remove('hidden');
+}
+
+function abrirModal() {
+  editId = null;
+  document.getElementById('f-nombre').value = '';
+  document.getElementById('f-monto').value = '';
+  document.getElementById('f-fecha').value = '';
+  document.getElementById('f-notas').value = '';
+  catSel = 'servicio';
+  document.querySelectorAll('.cat-opt').forEach(el => el.classList.toggle('sel', el.dataset.cat==='servicio'));
+  document.getElementById('modal-title').textContent = 'Nuevo gasto';
+  document.getElementById('modal').classList.remove('hidden');
+  setTimeout(() => document.getElementById('f-nombre').focus(), 100);
+}
+
+function cerrarModal() { document.getElementById('modal').classList.add('hidden'); }
+
+function onOverlayClick(e) {
+  if (e.target === document.getElementById('modal')) cerrarModal();
+}
+
+function selCat(el) {
+  catSel = el.dataset.cat;
+  document.querySelectorAll('.cat-opt').forEach(x => x.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+function guardar() {
+  const nombre = document.getElementById('f-nombre').value.trim();
+  if (!nombre) { document.getElementById('f-nombre').focus(); return; }
+  const monto = parseFloat(document.getElementById('f-monto').value) || 0;
+  const fecha = document.getElementById('f-fecha').value;
+  const notas = document.getElementById('f-notas').value.trim();
+  if (editId) {
+    const g = gastos.find(x=>x.id===editId);
+    if (g) Object.assign(g, { nombre, monto, fecha, notas, cat: catSel });
+  } else {
+    gastos.push({ id: Date.now().toString(), nombre, monto, fecha, notas, cat: catSel, pagado: false, mes, anio });
+  }
+  guardarLS(); cerrarModal(); render();
+}
+
+function setTab(tab, el) {
+  tabActivo = tab;
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  render();
+}
+
+function cambiarMes(dir) {
+  mes += dir;
+  if (mes > 11) { mes = 0; anio++; }
+  if (mes < 0) { mes = 11; anio--; }
+  render();
+}
+
+cargar(); render();
+</script>
+</body>
+</html>
