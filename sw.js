@@ -1,4 +1,4 @@
-const CACHE = 'gastos-v6';
+const CACHE = 'gastos-v7';
 const ASSETS = ['/Gastos/', '/Gastos/index.html', '/Gastos/manifest.json'];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)));

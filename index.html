@@ -396,6 +396,7 @@ function setProfile(p){
   tabActivo='todos';
   document.querySelectorAll('.tab').forEach((t,i)=>{t.classList.toggle('active',i===0);});
   guardarLS();render();
+  renderSabados();
 }
 
 function poblarMesInicio(){
@@ -607,7 +608,7 @@ function setTab(tab,el){
 }
 function cambiarMes(dir){
   mes+=dir;if(mes>11){mes=0;anio++;}if(mes<0){mes=11;anio--;}
-  guardarLS();render();
+  guardarLS();render();renderSabados();
 }
 
 
@@ -673,6 +674,7 @@ async function forzarActualizacion() {
 
 cargar();
 setProfile(perfil);
+renderSabados();
 
 if('serviceWorker' in navigator){
   window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js'));
