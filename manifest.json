@@ -1,0 +1,18 @@
+{
+  "name": "Mis Gastos",
+  "short_name": "Gastos",
+  "description": "Control de gastos mensuales",
+  "start_url": "/Gastos/",
+  "display": "standalone",
+  "background_color": "#0f0f0f",
+  "theme_color": "#0f0f0f",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj4KICA8cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9IjExNSIgZmlsbD0iIzBmMGYwZiIvPgogIDxyZWN0IHg9IjU2IiB5PSI1NiIgd2lkdGg9IjQwMCIgaGVpZ2h0PSI0MDAiIHJ4PSI4MCIgZmlsbD0iIzFhMWExYSIvPgogIDx0ZXh0IHg9IjI1NiIgeT0iMzMwIiBmb250LXNpemU9IjIzMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiPvCfkrg8L3RleHQ+Cjwvc3ZnPg==",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
