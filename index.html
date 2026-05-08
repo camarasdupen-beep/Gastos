@@ -170,6 +170,7 @@ select option{background:#1a1a1a;}
 <div class="header">
   <div class="header-top">
     <div class="app-name">💸 <span id="profile-label">Personal</span></div>
+    <button class="icon-btn" onclick="forzarActualizacion()" style="margin-right:6px;color:var(--text3)" title="Actualizar app"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg></button>
     <button class="add-fab" id="add-fab" onclick="abrirModal()" aria-label="Agregar gasto">
       <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
     </button>
@@ -650,6 +651,24 @@ function toggleSabado(key) {
   data.sabados[k] = (data.sabados[k] === key) ? null : key;
   guardarLS();
   renderSabados();
+}
+
+
+async function forzarActualizacion() {
+  try {
+    // Unregister all service workers
+    if ('serviceWorker' in navigator) {
+      const regs = await navigator.serviceWorker.getRegistrations();
+      for (const reg of regs) await reg.unregister();
+    }
+    // Clear all caches
+    const keys = await caches.keys();
+    await Promise.all(keys.map(k => caches.delete(k)));
+    // Reload
+    window.location.reload(true);
+  } catch(e) {
+    window.location.reload(true);
+  }
 }
 
 cargar();
